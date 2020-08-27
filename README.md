@@ -1,4 +1,5 @@
 # CSharp Missing File Finder
+![.NET Core](https://github.com/simon-curtis/CSharpMissingFileFinder/workflows/.NET%20Core/badge.svg)
 
 Console app that scans a C# project file (.csproj) and displays physically missing files. This can be handy if you have a large nested project with lots of missing references.
 
