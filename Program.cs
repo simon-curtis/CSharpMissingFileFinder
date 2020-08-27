@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Web;
 using System.Xml.Serialization;
 
 namespace CSharpMissingFileFinder
@@ -41,22 +42,23 @@ namespace CSharpMissingFileFinder
                 foreach (var item in group.Reference)
                     if (item.HintPath != null 
                         && !item.HintPath.StartsWith(@"C:\")
-                        && !File.Exists(Path.Combine(_path, item.HintPath))
+                        && !File.Exists(GetPath(item.HintPath))
                     )
-                        Console.WriteLine(">> " + item.HintPath);
+                        Console.WriteLine(">> " + GetPath(item.HintPath));
 
                 foreach (var item in group.Compile)
-                    if (!File.Exists(Path.Combine(_path, item.Include)))
-                        Console.WriteLine(">> " + item.Include);
+                    if (!File.Exists(GetPath(item.Include)))
+                        Console.WriteLine(">> " + GetPath(item.Include));
 
                 foreach (var item in group.Content)
-                {
-                    if (!File.Exists(Path.Combine(_path, item.Include)))
-                        Console.WriteLine(">> " + item.Include);
-                }
+                    if (!File.Exists(GetPath(item.Include)))
+                        Console.WriteLine(">> " + GetPath(item.Include));
             }
+
             Console.WriteLine("-".PadRight(20, '-'));
             Console.WriteLine("Finished");
         }
+
+        static string GetPath(string hintPath) => Path.Combine(_path, HttpUtility.UrlDecode(hintPath));
     }
 }
